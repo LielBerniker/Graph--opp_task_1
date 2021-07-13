@@ -1,0 +1,115 @@
+      Graph  implementation  :
+      The graph structure include a NodeData class of the graph vertices,
+      The graph class build from a collection of node_data, and the class called Graph_DS.
+      The implementation contain also an class of functions that refer to the graph,
+      this class called Graph_Algo.
+      Each class implements from an specific interface that belong to it.
+      In the graph implementation I create, I tried to illustrate structure of undirected graph,
+      base on the vertices and edges the graph build from and the function that match to an undirected graph.
+      The NodeData class:
+      It's implements from the node_data interface.
+      The NodeData arguments:
+          Key =  the key is a number that refer to each node(vertex)
+         Node_Neighbors = a collection that refer to the neighbors of the specific vertex ,
+          the vertices that are connect to this specific vertex by edge
+          I chose the collection to be an hashmap so I can reach a specific vertex by o(1).
+         Information = the information help me with function in the class of graph_algorithms,
+         it usually contain colors black, white, grey.
+         Tag = the tag used in the graph_algorithms class in a function that calculate the path in the graph
+           node_key_counter = determine the node key, its a static argument so each node have a specific key
+      NodeData functions:
+          * constructor -
+          there are two constructors, the first crate a new node with a new key and reset all arguments,
+          the second constructor its a copy constructor, copy all the information include key
+          * getKey() - return the vertex key
+          * getNi() - return a collection with all the vertex neighbors
+          * hasNi(int key) - checks if its an edge between one vertex to another
+          * addNi(node_data t) - add a neighbor to a specific vertex
+          * removeNode(node_data node) - remove a neighbor from the vertex neighbors
+          * getInfo(),setInfo(String s) - function that change or return the vertex information
+          * getTag(), setTag(int t) - functions that change and return the vertex tag
+          *  toString() - return a string value of the vertex and all of its neighbors
+the Graph_DS class:
+It's implements from the graph interface.
+  The Graph_DS arguments:
+       nodes_of_graph =  its a collection that contain all the vertices in the graph,
+          i chose a collection of an hashmap so I can use a variety of function refer to the vertices in o(1)
+          edges_number = hold the number of the edges in this graph
+           MC = number of changes in the graph, refer to any change in the graph structure
+      Graph_DS functions:
+          * constructor -
+           there are two constructors, the first crate a new graph with 0 edges and 0 changes,
+           the second constructor it is a copy constructor,but its copy's the MC , minus the edges and the vertices,
+           it is subtract the edges and vertices because they will be added in the copy function in Graph_Algo.
+          * getNode(int key) - return a specific vertex in the graph by its key, if the vertex not in the graph return null
+          * hasEdge(int node1, int node2) - return true or false if the two vertices have an edge between them,
+            the function checks if both of the vertices have the other in their neighbors
+          * addNode(node_data n) - add a new vertex to the graph , add only if the specific vertex not already in the graph
+          * connect(int node1, int node2)- connect between two vertices only if both of them in the graph , if their have a different key ,
+          and if their not already connected.
+          * getV() - return a hashmap value collection of the vertices of the graph . return in o(1)
+          * getV(int node_id) - return a hashmap value collection of neighbors of a specific vertex in the graph. return in o(1)
+          * removeNode(int key) - remove a vertex from a graph only if the vertex is in the graph, remove vertex by key
+          go over the vertex neighbors and delete from their neighbors the specific vertex we delete
+          *  removeEdge(int node1, int node2) - remove an edge between to vertices only if the two vertices in the graph
+            and if their is an edge ib between them. do it by remove the vertices from each other neighbors
+          * nodeSize() - return the number of vertices in the graph , by the size of the vertices hashmap collection
+          * edgeSize() - return the number of edges in the graph, by return the edge counter
+          * getMC() - return the number of changes in the graph, by return the mc counter
+          * toString() - return a string of the graph structure information, do it by go over
+          the graph vertices and use the toString function of each vertex
+the Graph_Algo class:
+   It's implements from the graph_algorithms interface.
+    The Graph_Algo arguments:
+           graph1 =  refer to the graph that the function in the graph algorithm will work with
+
+         Graph_Algo functions:
+             * constructor - the constructor build a new empty graph
+             * init(graph g) - make the graph1 argument to point on a graph g
+             *  copy() - create a copy from the current graph and return the copy.
+             the function go over all the vertices in the graph , if the vertex is not in the new graph add it with the same key,
+             and go over the vertex neighbors if the vertex have some . if the neighbor is not in the new graph add it with the same key ,
+             and connect between the vertex and its neighbor in the new graph.
+             if there are already connected they will not be connected again
+             * isConnected() - return true if there ia a path from any two vertices in the graph or
+             if the there is only one vertex in the graph.
+             the function take a vertex from the graph by iterator and activate an inner function with the vertex
+             the inner function sets every vertex tag in the graph to the shortest path by number of edges from the start vertex.
+             after the activation of the inner function, is connected function go over the vertices of the graph
+             and check their tag , if one of the tag is -1 (mean there is no possible path to the vertex) the graph is not fully connected .
+             if all of the vertices tag is different from -1 than the graph is fully connected.
+             * distance_from (int src) - the function sets every vertex tag in the graph to contain the distance from the src vertex
+             it is an inner function that used in the is connected function. first the function go over the graph vertices and
+             rest every vertex info to white and tag to -1, the info is important to know if the vertex tag has been handled already.
+             if info = white - the vertex not been handled ,= grey - vertex tag been handled but neighbors yet to be handle,
+             = black - been handled completely . the function use a list that function ass a queue , to hold the vertex
+             and change their information and tag.
+             the function go from the src vertex and go over its neighbors and change their tag to src tag +1
+             and insert each vertex that went throw the tag change to the queue .
+             the function go until the queue is empty and all the vertices that can be reach from the src vertex has been reached
+             * shortestPathDist(int src, int dest) - the function return the size of the shortest path from one vertex to another
+             checks if the graph not empty, if the vertex that the function gets are in the graph , if not return -1
+             if the src vertex equal to the dest vertex return 0.
+              than the function use an inner function that sets every vertex tag, in the path from src vertex to dest vertex ,
+              to contain the shortest path from src vertex by edges. after the inner function the shortestPathDist function
+              return the dest vertex tag, if the tag is -1 it is mean that is no path between the two vertices in the graph.
+             * short_path (int src,int dest) - its an inner function used by two function, the function sets every vertex tag in the path
+             from src vertex to dest vertex to hold the distance from src by edges, and return an hashmap that contain a
+             vertex key as the key ,and the key of the previous vertex in the path in the value.
+             the function go from the src vertex and sets the tag for each vertex in the path to dest vertex if there is a path.
+             the function use a list that function as a queue and hold vertices, its go over the vertices in the queue
+             until it is empty , the function checks if the vertex been handled before and operate accordingly to the vertex
+             information (same as in the distance_from function). the function also add each vertex to the hashmap.
+             the function stops when the queue is empty or if it reaches the dest vertex, and returns the hashmap.
+             because the function go from the src vertex and go over the neighbors a go on the same way until finish ,
+             we gets the shortest path to the dest vertex tag.
+             * shortestPath(int src, int dest) - the function return a list that contain the vertices in the path from
+             src vertex to dest vertex, if there is no path or the vertices not in the graph return empty list.
+             the function call an inner function the return an hashmap with every vertex in the path as key and
+             his previous vertex key as value .the function create a list from the hashmap that hold the dest vertex first
+             and the src vertex last , it create the list by the information in the hashmap. after create the list the
+             function turn over the list so it holds the vertices in the path in the wright order (from src to dest)
+             if there is no path no list will be created and will return empty list.
+
+
+
